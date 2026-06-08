@@ -13,25 +13,31 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # 1. Menyiapkan Python untuk melatih model
+      # 1. Menyiapkan Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
-      # 2. Menginstal library yang dibutuhkan (dari luar/root)
+      # 2. Menginstal library yang dibutuhkan
       - name: Install Dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 3. Masuk ke MLProject dan Jalankan proses pelatihan model
+      # 3. Menyalakan MLflow Server di background mesin GitHub
+      - name: Start MLflow Server
+        run: |
+          mlflow server --host 127.0.0.1 --port 5000 &
+          sleep 5  # Menunggu 5 detik agar server siap menerima data
+          
+      # 4. Masuk ke MLProject dan Jalankan proses pelatihan model
       - name: Train Machine Learning Model
         run: |
           cd MLProject
           python modelling.py
 
-      # 4. Melanjutkan proses Docker jika training sukses
+      # 5. Melanjutkan proses Docker jika training sukses
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 

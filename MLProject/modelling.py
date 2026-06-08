@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 
 # Atur tracking URI ke server MLflow lokal
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+#mlflow.set_tracking_uri("http://127.0.0.1:5000")
 mlflow.set_experiment("eksperimen_model_lokal")
 
 # Autologging aktif

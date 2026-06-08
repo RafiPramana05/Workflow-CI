@@ -1,4 +1,4 @@
-name: CI Pipeline (Docker Build & Push)
+name: CI Pipeline (Train & Docker Build)
 
 on:
   push:
@@ -6,13 +6,32 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build-and-train:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # 1. Menyiapkan Python untuk melatih model
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      # 2. Menginstal library yang dibutuhkan (dari luar/root)
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 3. Masuk ke MLProject dan Jalankan proses pelatihan model
+      - name: Train Machine Learning Model
+        run: |
+          cd MLProject
+          python modelling.py
+
+      # 4. Melanjutkan proses Docker jika training sukses
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 

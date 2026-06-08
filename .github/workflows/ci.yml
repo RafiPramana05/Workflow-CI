@@ -36,7 +36,7 @@ jobs:
       - name: Run mlflow project
         run: |
           # Perintah ini yang dicari reviewer, bukan sekadar 'python modelling.py'
-          mlflow run MLProject --env-manager=local
+          mlflow run MLProject --env-manager=local --experiment-name="eksperimen_model_lokal"
 
       # 5. Sesuai gambar reviewer: Get latest MLflow run_id
       - name: Get latest MLflow run_id
